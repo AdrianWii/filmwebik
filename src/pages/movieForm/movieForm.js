@@ -7,7 +7,33 @@ export function MovieForm() {
     director: "",
   });
 
-  const handleSubmit = async (event) => {};
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log(formData);
+
+    try {
+      const result = await fetch("http://localhost:3005/api/movies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (result.status !== 201) {
+        console.error("wrong status");
+        return;
+      }
+
+      const newMovie = await result.json();
+      console.log(newMovie);
+      alert("film dodany");
+    } catch (e) {
+      console.error(e.message);
+      alert("Coś poszło nie tak 😢");
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
